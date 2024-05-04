@@ -1,3 +1,6 @@
+## 0.0.8
+* Added example 
+
 ## 0.0.7
 * Added some magic
 
