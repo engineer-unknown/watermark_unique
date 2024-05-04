@@ -2,7 +2,7 @@ name: watermark_unique_example
 description: "Demonstrates how to use the watermark_unique plugin."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+homepage: https://github.com/engineer-unknown/watermark_unique
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
