@@ -1,0 +1,34 @@
+name: watermark_unique
+description: "watermark_unique is a flutter package to add text and image watermarks on an image. You can customize the watermark's position, color, background color, and padding."
+version: 0.0.7
+homepage: https://github.com/engineer-unknown/watermark_unique
+
+environment:
+  sdk: '>=3.2.5 <4.0.0'
+  flutter: '>=3.3.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  image: ^4.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  plugin:
+    platforms:
+      android:
+        package: com.unknown.engineer.unique.watermark.watermark_unique
+        pluginClass: WatermarkUniquePlugin
+      ios:
+        pluginClass: WatermarkUniquePlugin
+      web:
+        pluginClass: WatermarkWeb
+        fileName: watermark_web.dart
