@@ -62,7 +62,8 @@ class WatermarkUnique {
   }
 
   Future<Uint8List?> addTextWatermarkUint8List({
-    required Uint8List filePath,
+    required String filePath,
+    Uint8List? bytes,
     required String text,
     required int x,
     required int y,
@@ -76,6 +77,7 @@ class WatermarkUnique {
   }) {
     return WatermarkBridge.instance.addTextWatermarkUint8List(
       filePath,
+      bytes,
       text,
       x,
       y,
@@ -90,7 +92,8 @@ class WatermarkUnique {
   }
 
   Future<Uint8List?> addImageWatermarkUint8List({
-    required Uint8List filePath,
+    required String filePath,
+    Uint8List? bytes,
     required Uint8List watermarkImagePath,
     required int x,
     required int y,
@@ -99,6 +102,7 @@ class WatermarkUnique {
   }) {
     return WatermarkBridge.instance.addImageWatermarkUint8List(
       filePath,
+      bytes,
       watermarkImagePath,
       x,
       y,

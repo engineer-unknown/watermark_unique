@@ -1,6 +1,6 @@
 name: watermark_unique
 description: "watermark_unique is a flutter package to add text and image watermarks on an image. You can customize the watermark's position, color, background color, and padding."
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/engineer-unknown/watermark_unique
 
 environment:

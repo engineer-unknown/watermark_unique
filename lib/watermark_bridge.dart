@@ -66,7 +66,8 @@ abstract class WatermarkBridge extends PlatformInterface {
   ///
   /// Returns a [Uint8List] representing the watermarked image.
   Future<Uint8List?> addTextWatermarkUint8List(
-    Uint8List filePath,
+    String filePath,
+    Uint8List? bytes,
     String text,
     int x,
     int y,
@@ -83,7 +84,8 @@ abstract class WatermarkBridge extends PlatformInterface {
   ///
   /// Returns a [Uint8List] representing the watermarked image.
   Future<Uint8List?> addImageWatermarkUint8List(
-    Uint8List filePath,
+    String filePath,
+    Uint8List? bytes,
     Uint8List watermarkImagePath,
     int x,
     int y,

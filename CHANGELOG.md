@@ -1,3 +1,6 @@
+## 1.0.1
+* Change in the way of doing things
+
 ## 1.0.0
 * Change in the way of doing things
 

@@ -18,7 +18,7 @@ class ExampleWidget extends StatefulWidget {
 class _ExampleWidgetState extends State<ExampleWidget> {
   final _watermarkPlugin = WatermarkUnique();
   File? photo;
-  Uint8List? photoUint8List;
+  String? photoUint8List;
   Uint8List? watermarkUint8List;
   File? watermark;
   File? finalFile;
@@ -187,11 +187,10 @@ class _ExampleWidgetState extends State<ExampleWidget> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      final imageBytes = await image.readAsBytes();
       final savedFile = File(image.path);
       setState(() {
         photo = savedFile;
-        photoUint8List = imageBytes;
+        photoUint8List = image.path;
       });
     } on PlatformException catch (e) {
       debugPrint('Failed to pick image from gallery: $e');

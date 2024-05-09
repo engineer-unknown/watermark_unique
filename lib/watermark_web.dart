@@ -18,7 +18,8 @@ class WatermarkWeb extends WatermarkBridge {
 
   @override
   Future<Uint8List?> addTextWatermarkUint8List(
-    Uint8List filePath,
+    String filePath,
+    Uint8List? bytes,
     String text,
     int x,
     int y,
@@ -30,7 +31,7 @@ class WatermarkWeb extends WatermarkBridge {
     int? backgroundTextPaddingLeft,
     int? backgroundTextPaddingRight,
   ) async {
-    final ui.Image image = await decodeImageFromList(filePath);
+    final ui.Image image = await decodeImageFromList(bytes!);
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
@@ -86,7 +87,8 @@ class WatermarkWeb extends WatermarkBridge {
 
   @override
   Future<Uint8List?> addImageWatermarkUint8List(
-    Uint8List filePath,
+    String filePath,
+    Uint8List? bytes,
     Uint8List watermarkImagePath,
     int x,
     int y,
@@ -95,7 +97,7 @@ class WatermarkWeb extends WatermarkBridge {
   ) async {
     // Decode the original image
     final originalImage = await ui
-        .instantiateImageCodec(filePath)
+        .instantiateImageCodec(bytes!)
         .then((codec) => codec.getNextFrame())
         .then((frame) => frame.image);
 
