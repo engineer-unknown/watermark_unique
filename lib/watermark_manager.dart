@@ -106,7 +106,7 @@ class WatermarkManager extends WatermarkBridge {
         'backgroundTextPaddingBottom': backgroundTextPaddingBottom,
         'backgroundTextPaddingLeft': backgroundTextPaddingLeft,
         'backgroundTextPaddingRight': backgroundTextPaddingRight,
-        'imageFormat': ImageFormat.png,
+        'imageFormat': ImageFormat.png.name,
       },
     );
     if (result != null) {
@@ -136,7 +136,7 @@ class WatermarkManager extends WatermarkBridge {
         'watermarkWidth': watermarkWidth,
         'watermarkHeight': watermarkHeight,
         'quality': 100,
-        'imageFormat': ImageFormat.png,
+        'imageFormat': ImageFormat.png.name,
       },
     );
     if (result != null) {

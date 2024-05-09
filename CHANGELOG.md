@@ -1,3 +1,6 @@
+## 1.0.0
+* Change in the way of doing things
+
 ## 0.0.9
 * Updated pubspec
 
