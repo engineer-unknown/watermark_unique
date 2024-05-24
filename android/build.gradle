@@ -1,5 +1,3 @@
-package android
-
 group 'com.unknown.engineer.unique.watermark.watermark_unique'
 version '1.0-SNAPSHOT'
 

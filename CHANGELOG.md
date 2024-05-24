@@ -1,3 +1,6 @@
+## 1.0.2
+* Fixed problem with Android build
+
 ## 1.0.1
 * Change in the way of doing things
 
