@@ -5,6 +5,7 @@ homepage: https://github.com/engineer-unknown/watermark_unique
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
+  flutter: '>=3.22.0'
 
 dependencies:
   flutter:
