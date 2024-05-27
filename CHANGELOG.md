@@ -1,4 +1,7 @@
 ## 1.0.2
+* Updated libraries
+
+## 1.0.2
 * Fixed problem with Android build
 
 ## 1.0.1
