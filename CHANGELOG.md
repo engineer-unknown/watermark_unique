@@ -1,3 +1,7 @@
+## 1.0.4
+* Fixed bug with multiline in text
+* Added automatic text wrapping
+
 ## 1.0.3
 * Updated libraries
 

@@ -117,28 +117,6 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             Bitmap.CompressFormat.PNG
         }
 
-        // Draw background text color if provided
-        backgroundTextColor?.let { backgroundColor ->
-            val backgroundPaint = Paint().apply {
-                this.color = backgroundColor
-                style = Paint.Style.FILL
-            }
-            val textPaint = Paint().apply {
-                color = colorWatermark
-                textSize = textWatermarkSize
-                style = Paint.Style.FILL
-                isAntiAlias = true
-            }
-            val textWidth = textPaint.measureText(text)
-            val rect = RectF(
-                x - (backgroundTextPaddingLeft ?: 0F),
-                y + textPaint.ascent() - (backgroundTextPaddingTop ?: 0F),
-                x + textWidth + (backgroundTextPaddingRight ?: 0F),
-                y + (backgroundTextPaddingBottom ?: 0F)
-            )
-            canvas.drawRect(rect, backgroundPaint)
-        }
-
         val textPaint = Paint().apply {
             color = colorWatermark
             textSize = textWatermarkSize
@@ -146,7 +124,57 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             isAntiAlias = true
         }
 
-        canvas.drawText(text, x, y, textPaint)
+        // Define the maximum width for the text
+        val maxTextWidth = bitmap.width - (backgroundTextPaddingLeft ?: 0F) - (backgroundTextPaddingRight ?: 0F)
+
+        // Function to wrap text into lines
+        fun wrapText(text: String, maxWidth: Float): List<String> {
+            val wrappedLines = mutableListOf<String>()
+            val words = text.split(" ")
+            var line = ""
+            for (word in words) {
+                val testLine = if (line.isEmpty()) word else "$line $word"
+                val textWidth = textPaint.measureText(testLine)
+                if (textWidth <= maxWidth) {
+                    line = testLine
+                } else {
+                    if (line.isNotEmpty()) {
+                        wrappedLines.add(line)
+                    }
+                    line = word
+                }
+            }
+            if (line.isNotEmpty()) {
+                wrappedLines.add(line)
+            }
+            return wrappedLines
+        }
+
+        val lines = wrapText(text, maxTextWidth)
+        val lineHeight = textPaint.descent() - textPaint.ascent()
+        val baseY = y
+
+        // Draw background text color if provided
+        backgroundTextColor?.let { backgroundColor ->
+            val backgroundPaint = Paint().apply {
+                this.color = backgroundColor
+                style = Paint.Style.FILL
+            }
+            val textWidth = lines.maxOfOrNull { textPaint.measureText(it) } ?: 0f
+            val rect = RectF(
+                x - (backgroundTextPaddingLeft ?: 0F),
+                baseY + textPaint.ascent() - (backgroundTextPaddingTop ?: 0F),
+                x + textWidth + (backgroundTextPaddingRight ?: 0F),
+                baseY + (lineHeight * lines.size) + (backgroundTextPaddingBottom ?: 0F)
+            )
+            canvas.drawRect(rect, backgroundPaint)
+        }
+
+        var currentY = baseY
+        for (line in lines) {
+            canvas.drawText(line, x, currentY, textPaint)
+            currentY += lineHeight
+        }
 
         val file = File(filePath)
 
@@ -169,6 +197,7 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             e.printStackTrace()
         }
     }
+
     private fun addImageWatermark(
         filePath: String,
         watermarkImagePath: String,

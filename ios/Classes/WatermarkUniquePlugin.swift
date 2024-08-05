@@ -118,32 +118,62 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
 
             image.draw(at: .zero)
 
-            // Calculate the size of the text
             let textFont = UIFont.systemFont(ofSize: textWatermarkSize)
             let textAttributes: [NSAttributedString.Key: Any] = [
                 .font: textFont,
                 .foregroundColor: colorWatermark
             ]
-            let textSize = text.size(withAttributes: textAttributes)
 
-            // Calculate the rect for text
-            let textRect = CGRect(x: x, y: y, width: textSize.width, height: textSize.height)
+            let maxTextWidth = image.size.width - x - (backgroundTextPaddingLeft ?? 0) - (backgroundTextPaddingRight ?? 0)
 
-            // Calculate the rect for background text
-            var backgroundRect = textRect.inset(by: UIEdgeInsets(top: -(backgroundTextPaddingTop ?? 0),
-                                                                 left: -(backgroundTextPaddingLeft ?? 0),
-                                                                 bottom: -(backgroundTextPaddingBottom ?? 0),
-                                                                 right: -(backgroundTextPaddingRight ?? 0)))
+            func wrappedText(_ text: String, width: CGFloat, font: UIFont) -> [String] {
+                let words = text.split(separator: " ")
+                var lines: [String] = []
+                var currentLine = ""
 
-            // Ensure backgroundRect does not exceed image bounds
-            backgroundRect = backgroundRect.intersection(CGRect(x: x, y: y, width: image.size.width, height: image.size.height))
+                for word in words {
+                    let newLine = currentLine.isEmpty ? String(word) : "\(currentLine) \(word)"
+                    let size = newLine.size(withAttributes: [.font: font])
 
-            if let backgroundColor = backgroundTextColor {
-                backgroundColor.setFill()
-                UIRectFill(backgroundRect)
+                    if size.width <= width {
+                        currentLine = newLine
+                    } else {
+                        if !currentLine.isEmpty {
+                            lines.append(currentLine)
+                        }
+                        currentLine = String(word)
+                    }
+                }
+                if !currentLine.isEmpty {
+                    lines.append(currentLine)
+                }
+
+                return lines
             }
 
-            text.draw(in: textRect, withAttributes: textAttributes)
+            let lines = wrappedText(text, width: maxTextWidth, font: textFont)
+            var currentY = y
+
+            for line in lines {
+                let textSize = line.size(withAttributes: textAttributes)
+                let textRect = CGRect(x: x, y: currentY, width: textSize.width, height: textSize.height)
+
+                var backgroundRect = textRect.inset(by: UIEdgeInsets(top: -(backgroundTextPaddingTop ?? 0),
+                                                                     left: -(backgroundTextPaddingLeft ?? 0),
+                                                                     bottom: -(backgroundTextPaddingBottom ?? 0),
+                                                                     right: -(backgroundTextPaddingRight ?? 0)))
+
+                backgroundRect = backgroundRect.intersection(CGRect(x: x, y: y, width: image.size.width, height: image.size.height))
+
+                if let backgroundColor = backgroundTextColor {
+                    backgroundColor.setFill()
+                    UIRectFill(backgroundRect)
+                }
+
+                line.draw(in: textRect, withAttributes: textAttributes)
+
+                currentY += textSize.height
+            }
 
             guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
                 UIGraphicsEndImageContext()
