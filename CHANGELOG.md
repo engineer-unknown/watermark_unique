@@ -1,3 +1,8 @@
+## 1.0.5
+* Fixed bug with multiline in text
+* Fixed bug with automatic text wrapping
+* Added possibility to add color \ background with opacity
+
 ## 1.0.4
 * Fixed bug with multiline in text
 * Added automatic text wrapping

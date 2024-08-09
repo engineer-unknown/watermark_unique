@@ -27,8 +27,8 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
                 val x = call.argument<Int?>("x")
                 val y = call.argument<Int?>("y")
                 val textSize = call.argument<Int>("textSize")
-                val color = call.argument<Long>("color")?.toInt()
-                val backgroundTextColor = call.argument<Long>("backgroundTextColor")?.toInt()
+                val color = call.argument<Number>("color")?.toInt()
+                val backgroundTextColor = call.argument<Number>("backgroundTextColor")?.toInt()
                 val quality = call.argument<Int>("quality")
                 val imageFormat = call.argument<String>("imageFormat")
                 val backgroundTextPaddingTop =
@@ -124,29 +124,39 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             isAntiAlias = true
         }
 
-        // Define the maximum width for the text
         val maxTextWidth = bitmap.width - (backgroundTextPaddingLeft ?: 0F) - (backgroundTextPaddingRight ?: 0F)
 
-        // Function to wrap text into lines
         fun wrapText(text: String, maxWidth: Float): List<String> {
             val wrappedLines = mutableListOf<String>()
-            val words = text.split(" ")
-            var line = ""
-            for (word in words) {
-                val testLine = if (line.isEmpty()) word else "$line $word"
-                val textWidth = textPaint.measureText(testLine)
-                if (textWidth <= maxWidth) {
-                    line = testLine
-                } else {
-                    if (line.isNotEmpty()) {
-                        wrappedLines.add(line)
+            val paragraphs = text.split("\n")
+
+            for (paragraph in paragraphs) {
+                val words = paragraph.split(" ")
+                var line = ""
+
+                for (word in words) {
+                    val testLine = if (line.isEmpty()) word else "$line $word"
+                    val textWidth = (textPaint.measureText(testLine) + 50)
+
+                    if (textWidth > maxWidth) {
+                        if (line.isNotEmpty()) {
+                            wrappedLines.add(line)
+                        }
+                        line = word
+                    } else {
+                        line = testLine
                     }
-                    line = word
+                }
+
+                if (line.isNotEmpty()) {
+                    wrappedLines.add(line)
+                }
+
+                if (paragraph != paragraphs.last()) {
+                    wrappedLines.add("")
                 }
             }
-            if (line.isNotEmpty()) {
-                wrappedLines.add(line)
-            }
+
             return wrappedLines
         }
 
@@ -154,7 +164,6 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
         val lineHeight = textPaint.descent() - textPaint.ascent()
         val baseY = y
 
-        // Draw background text color if provided
         backgroundTextColor?.let { backgroundColor ->
             val backgroundPaint = Paint().apply {
                 this.color = backgroundColor

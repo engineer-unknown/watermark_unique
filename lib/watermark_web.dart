@@ -24,8 +24,8 @@ class WatermarkWeb extends WatermarkBridge {
     int x,
     int y,
     int textSize,
-    int color,
-    int? backgroundTextColor,
+    Color color,
+    Color? backgroundTextColor,
     int? backgroundTextPaddingTop,
     int? backgroundTextPaddingBottom,
     int? backgroundTextPaddingLeft,
@@ -46,7 +46,7 @@ class WatermarkWeb extends WatermarkBridge {
     canvas.drawImage(image, Offset.zero, Paint());
 
     final textStyle = ui.TextStyle(
-      color: Color(color),
+      color: color,
       fontSize: textSize.toDouble(),
     );
 
@@ -63,7 +63,7 @@ class WatermarkWeb extends WatermarkBridge {
       ..layout(ui.ParagraphConstraints(width: image.width.toDouble()));
 
     if (backgroundTextColor != null) {
-      final bgPaintText = Paint()..color = Color(backgroundTextColor);
+      final bgPaintText = Paint()..color = backgroundTextColor;
       final backgroundRect = Rect.fromLTRB(
         x.toDouble() - (backgroundTextPaddingLeft ?? 0),
         y.toDouble() - (backgroundTextPaddingTop ?? 0),

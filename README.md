@@ -16,8 +16,8 @@ Check on pub.dev: https://pub.dev/packages/watermark_unique
 - Position by X
 - Position by Y
 - Text size
-- Text color
-- Background text color (optional)
+- Text color (withOpacity)
+- Background text color (optional / withOpacity)
 - Padding for text if background exist (optional)
 - Quality of image with watermark
 - Image format that you will use to compress
@@ -31,8 +31,8 @@ final image = await watermarkPlugin.addTextWatermark(
   x: 500, // position by x
   y: 400, // position by y
   textSize: 250, // text size
-  color: Colors.purpleAccent.value, // color of text
-  backgroundTextColor: Colors.black.value, // color of background text (optional)
+  color: Colors.purpleAccent, // color of text
+  backgroundTextColor: Colors.black.withOpacity(0.5), // color of background text (optional)
   quality: 100, // quality of image with watermark
   backgroundTextPaddingLeft: 12, // padding of background text (optional)
   backgroundTextPaddingTop: 12, // padding of background text (optional)
@@ -64,8 +64,8 @@ final image = await watermarkPlugin.addTextWatermarkUint8List(
   x: 500, // position by x
   y: 400, // position by y
   textSize: 250, // text size
-  color: Colors.purpleAccent.value, // color of text
-  backgroundTextColor: Colors.black.value, // color of background text (optional)
+  color: Colors.purpleAccent, // color of text
+  backgroundTextColor: Colors.black, // color of background text (optional)
   backgroundTextPaddingLeft: 12, // padding of background text (optional)
   backgroundTextPaddingTop: 12, // padding of background text (optional)
   backgroundTextPaddingRight: 12, // padding of background text (optional)

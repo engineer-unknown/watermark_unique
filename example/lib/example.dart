@@ -167,13 +167,11 @@ class _ExampleWidgetState extends State<ExampleWidget> {
                   Image.file(
                     finalFile!,
                     width: 400,
-                    height: 400,
                   ),
                 if (finalUint8List != null)
                   Image.memory(
                     finalUint8List!,
                     width: 400,
-                    height: 400,
                   ),
               ],
             ),
@@ -221,8 +219,8 @@ class _ExampleWidgetState extends State<ExampleWidget> {
       x: 100,
       y: 500,
       textSize: 100,
-      color: Colors.black.value,
-      backgroundTextColor: Colors.orange.value,
+      color: Colors.black,
+      backgroundTextColor: Colors.orange,
       quality: 50,
       backgroundTextPaddingBottom: 100,
       backgroundTextPaddingLeft: 100,
@@ -230,7 +228,6 @@ class _ExampleWidgetState extends State<ExampleWidget> {
       backgroundTextPaddingTop: 500,
       imageFormat: ImageFormat.jpeg,
     );
-    debugPrint('add image watermark: $image');
     if (image != null) {
       setState(() {
         finalFile = File(image);
@@ -249,7 +246,6 @@ class _ExampleWidgetState extends State<ExampleWidget> {
       watermarkWidth: 500,
       watermarkHeight: 500,
     );
-    debugPrint('add image watermark: $image');
     if (image != null) {
       setState(() {
         finalFile = File(image);
@@ -260,18 +256,17 @@ class _ExampleWidgetState extends State<ExampleWidget> {
   Future<void> _addTextWatermarkUint8List() async {
     final image = await _watermarkPlugin.addTextWatermarkUint8List(
       filePath: photoUint8List!,
-      text: 'Test watermark text Test watermark text Test watermark 7',
-      x: 100,
+      text: 'Test watermark text\nTest watermark text Test watermark 7 Test watermark text Test watermark 1 Test watermark text Test watermark 2 Test watermark text Test watermark 3 Test watermark text Test watermark\n77777',
+      x: 50,
       y: 100,
       textSize: 24,
-      color: Colors.black.value,
-      backgroundTextColor: Colors.orange.value,
+      color: Colors.black.withOpacity(0.5),
+      backgroundTextColor: Colors.orange,
       backgroundTextPaddingBottom: 50,
       backgroundTextPaddingLeft: 10,
       backgroundTextPaddingRight: 10,
       backgroundTextPaddingTop: 50,
     );
-    debugPrint('add image watermark: $image');
     if (image != null) {
       setState(() {
         finalUint8List = image;
@@ -288,7 +283,6 @@ class _ExampleWidgetState extends State<ExampleWidget> {
       watermarkWidth: 500,
       watermarkHeight: 500,
     );
-    debugPrint('add image watermark: $image');
     if (image != null) {
       setState(() {
         finalUint8List = image;

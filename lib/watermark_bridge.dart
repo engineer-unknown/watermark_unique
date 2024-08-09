@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:watermark_unique/watermark_manager.dart';
@@ -31,8 +32,8 @@ abstract class WatermarkBridge extends PlatformInterface {
     int x,
     int y,
     int textSize,
-    int color,
-    int? backgroundTextColor,
+    Color color,
+    Color? backgroundTextColor,
     int quality,
     int? backgroundTextPaddingTop,
     int? backgroundTextPaddingBottom,
@@ -72,8 +73,8 @@ abstract class WatermarkBridge extends PlatformInterface {
     int x,
     int y,
     int textSize,
-    int color,
-    int? backgroundTextColor,
+    Color color,
+    Color? backgroundTextColor,
     int? backgroundTextPaddingTop,
     int? backgroundTextPaddingBottom,
     int? backgroundTextPaddingLeft,

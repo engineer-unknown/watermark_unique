@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:watermark_unique/watermark_bridge.dart';
 import 'image_format.dart';
 
@@ -13,8 +14,8 @@ class WatermarkUnique {
     required int x,
     required int y,
     required int textSize,
-    required int color,
-    int? backgroundTextColor,
+    required Color color,
+    Color? backgroundTextColor,
     required int quality,
     int? backgroundTextPaddingTop,
     int? backgroundTextPaddingBottom,
@@ -68,8 +69,8 @@ class WatermarkUnique {
     required int x,
     required int y,
     required int textSize,
-    required int color,
-    int? backgroundTextColor,
+    required Color color,
+    Color? backgroundTextColor,
     int? backgroundTextPaddingTop,
     int? backgroundTextPaddingBottom,
     int? backgroundTextPaddingLeft,

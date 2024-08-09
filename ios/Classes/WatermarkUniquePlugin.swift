@@ -27,10 +27,21 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
                 result(FlutterError(code: "ARGUMENT_ERROR", message: "Missing arguments", details: nil))
                 return
             }
-            var backgroundTextColor: UIColor?
-            if let colorBackgroundHex = arguments["backgroundTextColor"] as? CGFloat {
-                backgroundTextColor = UIColor(rgb: Int(colorBackgroundHex))
-            }
+
+         var backgroundTextColor: UIColor?
+
+         if let colorBackgroundHex = arguments["backgroundTextColor"] as? Int {
+             let alpha = CGFloat((colorBackgroundHex >> 24) & 0xFF) / 255.0
+             let red = CGFloat((colorBackgroundHex >> 16) & 0xFF) / 255.0
+             let green = CGFloat((colorBackgroundHex >> 8) & 0xFF) / 255.0
+             let blue = CGFloat(colorBackgroundHex & 0xFF) / 255.0
+
+             print("Alpha: \(alpha), Red: \(red), Green: \(green), Blue: \(blue)")
+
+             backgroundTextColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+         }
+
+
             let backgroundTextPaddingTop = arguments["backgroundTextPaddingTop"] as? CGFloat
             let backgroundTextPaddingBottom = arguments["backgroundTextPaddingBottom"] as? CGFloat
             let backgroundTextPaddingLeft = arguments["backgroundTextPaddingLeft"] as? CGFloat
