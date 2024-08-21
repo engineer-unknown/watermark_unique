@@ -1,3 +1,6 @@
+## 1.0.6
+* Fixed issue with android context
+
 ## 1.0.5
 * Fixed bug with multiline in text
 * Fixed bug with automatic text wrapping

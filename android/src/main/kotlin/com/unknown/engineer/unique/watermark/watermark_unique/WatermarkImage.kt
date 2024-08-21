@@ -14,11 +14,16 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
         fun registerWith(messenger: BinaryMessenger, context: Context): MethodChannel {
             val channel = MethodChannel(messenger, "WatermarkImage")
             val plugin = WatermarkImage()
-            plugin.context = context
+            plugin.setContext(context)
             channel.setMethodCallHandler(plugin)
             return  channel
         }
     }
+
+    private fun setContext(context: Context) {
+        this.context = context
+    }
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "addTextWatermark" -> {
