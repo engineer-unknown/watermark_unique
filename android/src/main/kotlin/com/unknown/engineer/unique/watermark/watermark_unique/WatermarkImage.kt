@@ -1,5 +1,6 @@
 package com.unknown.engineer.unique.watermark.watermark_unique
 
+import android.media.ExifInterface
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
@@ -44,6 +45,7 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
                     call.argument<Int?>("backgroundTextPaddingLeft")?.toFloat()
                 val backgroundTextPaddingRight =
                     call.argument<Int?>("backgroundTextPaddingRight")?.toFloat()
+                val isNeedRotate = call.argument<Boolean?>("isNeedRotate") ?: true
 
                 if (text != null && filePath != null && x != null && y != null && textSize != null && color != null && quality != null && imageFormat != null) {
                     addTextWatermark(
@@ -60,6 +62,7 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
                         backgroundTextPaddingLeft,
                         backgroundTextPaddingRight,
                         imageFormat!!,
+                        isNeedRotate,
                         result
                     )
                 } else {
@@ -97,6 +100,7 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             else -> result.notImplemented()
         }
     }
+
     private fun addTextWatermark(
         text: String,
         filePath: String,
@@ -111,9 +115,13 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
         backgroundTextPaddingLeft: Float?,
         backgroundTextPaddingRight: Float?,
         imageFormat: String,
+        isNeedRotate: Boolean,
         result: MethodChannel.Result
     ) {
-        val bitmap = BitmapFactory.decodeFile(filePath)
+        var bitmap = BitmapFactory.decodeFile(filePath)
+        if(isNeedRotate) {
+            bitmap = rotateImageIfRequired(bitmap, filePath)
+        }
         val mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(mutableBitmap)
         val finalFormat = if (imageFormat.uppercase() == Bitmap.CompressFormat.JPEG.name) {
@@ -129,7 +137,7 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             isAntiAlias = true
         }
 
-        val maxTextWidth = bitmap.width - (backgroundTextPaddingLeft ?: 0F) - (backgroundTextPaddingRight ?: 0F)
+        val maxTextWidth = mutableBitmap.width - (backgroundTextPaddingLeft ?: 0F) - (backgroundTextPaddingRight ?: 0F)
 
         fun wrapText(text: String, maxWidth: Float): List<String> {
             val wrappedLines = mutableListOf<String>()
@@ -258,5 +266,24 @@ class WatermarkImage : MethodChannel.MethodCallHandler {
             result.error("WRITE_ERROR", "Error writing file", null)
             e.printStackTrace()
         }
+    }
+
+    private fun rotateImageIfRequired(img: Bitmap, filePath: String): Bitmap {
+        val exif = ExifInterface(filePath)
+        val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+        exif.saveAttributes()
+
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotateImage(img, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotateImage(img, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotateImage(img, 270f)
+            else -> img
+        }
+    }
+
+    private fun rotateImage(img: Bitmap, degree: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degree)
+        return Bitmap.createBitmap(img, 0, 0, img.width, img.height, matrix, true)
     }
 }

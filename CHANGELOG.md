@@ -1,3 +1,9 @@
+## 1.0.8
+* Added "isNeedRotateToPortrait" for addTextWatermark() and addTextWatermarkUint8List() only for Android
+
+## 1.0.7
+* Fixed image orientation for android
+
 ## 1.0.6
 * Fixed issue with android context
 

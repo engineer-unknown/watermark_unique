@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:watermark_unique/image_format.dart';
 import 'package:watermark_unique/watermark_unique.dart';
+import 'dart:ui' as ui;
 
 class ExampleWidget extends StatefulWidget {
   const ExampleWidget({
@@ -183,7 +184,7 @@ class _ExampleWidgetState extends State<ExampleWidget> {
 
   Future<void> _takeImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
       if (image == null) return;
       final savedFile = File(image.path);
       setState(() {
@@ -213,15 +214,21 @@ class _ExampleWidgetState extends State<ExampleWidget> {
   }
 
   Future<void> _addImageTextWatermark() async {
+    final editedImage = await photo!.readAsBytes();
+
+    final ui.Image imageEdited = await decodeImageFromList(editedImage);
+    debugPrint('width: ${imageEdited.width} height: ${imageEdited.width}');
+
     final image = await _watermarkPlugin.addTextWatermark(
       filePath: photo!.path,
       text: 'Test watermark text Test watermark text Test watermark 7',
       x: 100,
       y: 500,
-      textSize: 100,
+      textSize: 50,
       color: Colors.black,
       backgroundTextColor: Colors.orange,
       quality: 50,
+      isNeedRotateToPortrait: true, //  ONLY ANDROID
       backgroundTextPaddingBottom: 100,
       backgroundTextPaddingLeft: 100,
       backgroundTextPaddingRight: 300,
@@ -233,6 +240,11 @@ class _ExampleWidgetState extends State<ExampleWidget> {
         finalFile = File(image);
       });
     }
+    final editedImage2 = await finalFile!.readAsBytes();
+    final ui.Image imageEdited2 = await decodeImageFromList(editedImage2);
+
+    debugPrint('width2: ${imageEdited2.width} height2: ${imageEdited2.width}');
+
   }
 
   Future<void> _addWatermarkImageToPhoto() async {

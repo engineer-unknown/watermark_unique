@@ -32,6 +32,7 @@ final image = await watermarkPlugin.addTextWatermark(
   y: 400, // position by y
   textSize: 250, // text size
   color: Colors.purpleAccent, // color of text
+  isNeedRotateToPortrait: true, // rotation image to portrait (Default: false) ONLY ANDROID
   backgroundTextColor: Colors.black.withOpacity(0.5), // color of background text (optional)
   quality: 100, // quality of image with watermark
   backgroundTextPaddingLeft: 12, // padding of background text (optional)
@@ -65,6 +66,7 @@ final image = await watermarkPlugin.addTextWatermarkUint8List(
   y: 400, // position by y
   textSize: 250, // text size
   color: Colors.purpleAccent, // color of text
+  isNeedRotateToPortrait: true, // rotation image to portrait (Default: false) ONLY ANDROID
   backgroundTextColor: Colors.black, // color of background text (optional)
   backgroundTextPaddingLeft: 12, // padding of background text (optional)
   backgroundTextPaddingTop: 12, // padding of background text (optional)
