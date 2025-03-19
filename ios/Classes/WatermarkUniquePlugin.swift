@@ -178,7 +178,7 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
 
                 if let backgroundColor = backgroundTextColor {
                     backgroundColor.setFill()
-                    UIRectFill(backgroundRect)
+                    UIRectFillUsingBlendMode(backgroundRect, .normal)
                 }
 
                 line.draw(in: textRect, withAttributes: textAttributes)
