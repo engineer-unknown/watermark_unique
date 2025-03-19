@@ -174,7 +174,7 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
                                                                      bottom: -(backgroundTextPaddingBottom ?? 0),
                                                                      right: -(backgroundTextPaddingRight ?? 0)))
 
-                backgroundRect = backgroundRect.intersection(CGRect(x: x-backgroundTextPaddingLeft, y: y-backgroundTextPaddingTop, width: image.size.width, height: image.size.height))
+                backgroundRect = backgroundRect.intersection(CGRect(x: x-(backgroundTextPaddingTop ?? 0), y: y-(backgroundTextPaddingTop ?? 0), width: image.size.width, height: image.size.height))
 
                 if let backgroundColor = backgroundTextColor {
                     backgroundColor.setFill()
