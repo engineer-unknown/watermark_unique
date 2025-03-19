@@ -125,9 +125,9 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
         }
 
         DispatchQueue.global().async {
-            UIGraphicsBeginImageContextWithOptions(image.size, false, 0.0)
+            UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
 
-            image.draw(at: .zero)
+            image.draw(in: CGRect(origin: .zero, size: image.size))
 
             let textFont = UIFont.systemFont(ofSize: textWatermarkSize)
             let textAttributes: [NSAttributedString.Key: Any] = [
@@ -174,7 +174,7 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
                                                                      bottom: -(backgroundTextPaddingBottom ?? 0),
                                                                      right: -(backgroundTextPaddingRight ?? 0)))
 
-                backgroundRect = backgroundRect.intersection(CGRect(x: x, y: y, width: image.size.width, height: image.size.height))
+                backgroundRect = backgroundRect.intersection(CGRect(x: x-backgroundTextPaddingLeft, y: y-backgroundTextPaddingTop, width: image.size.width, height: image.size.height))
 
                 if let backgroundColor = backgroundTextColor {
                     backgroundColor.setFill()
@@ -186,7 +186,8 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
                 currentY += textSize.height
             }
 
-            guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
+            guard let newImage = UIGraphicsGetImageFromCurrentImageContext(),
+                let compressedData = newImage.jpegData(compressionQuality: (quality / 100)) else {
                 UIGraphicsEndImageContext()
                 completion(nil, NSError(domain: "ImageProcessorErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create new image"]))
                 return
@@ -194,16 +195,12 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
 
             UIGraphicsEndImageContext()
 
-            guard let data = newImage.jpegData(compressionQuality: (quality / 100)) ?? newImage.pngData() else {
-                completion(nil, NSError(domain: "ImageProcessorErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to convert image data"]))
-                return
-            }
-
-            let fileManager = FileManager.default
             let newFilePath = (filePath as NSString).deletingLastPathComponent + "/\(UUID().uuidString).\(imageFormat)"
-            if fileManager.createFile(atPath: newFilePath, contents: data, attributes: nil) {
+
+            do {
+                try compressedData.write(to: URL(fileURLWithPath: newFilePath), options: .atomic)
                 completion(newFilePath, nil)
-            } else {
+            } catch {
                 completion(nil, NSError(domain: "ImageProcessorErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to save image"]))
             }
         }
@@ -221,7 +218,7 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
 
         guard let image = UIImage(contentsOfFile: filePath),
               let watermarkImage = UIImage(contentsOfFile: watermarkImagePath) else {
-              completion(nil, NSError(domain: "READ_ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка чтения файла изображения"]))
+              completion(nil, NSError(domain: "READ_ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create new image"]))
             return
         }
 
@@ -233,7 +230,8 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
 
         guard let newImage = UIGraphicsGetImageFromCurrentImageContext(),
               let compressedData = newImage.jpegData(compressionQuality: (quality / 100)) else {
-            completion(nil, NSError(domain: "CONVERSION_ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка преобразования данных изображения"]))
+            UIGraphicsEndImageContext()
+            completion(nil, NSError(domain: "CONVERSION_ERROR", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create new image"]))
             return
         }
 
@@ -245,7 +243,7 @@ public class WatermarkUniquePlugin: NSObject, FlutterPlugin {
             try compressedData.write(to: URL(fileURLWithPath: newFilePath), options: .atomic)
             completion(newFilePath, nil)
         } catch {
-            completion(nil, NSError(domain: "ImageProcessorErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Ошибка сохранения изображения"]))
+            completion(nil, NSError(domain: "ImageProcessorErrorDomain", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to save image"]))
         }
     }
 }
