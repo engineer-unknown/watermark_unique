@@ -1,4 +1,9 @@
 ## 1.0.8
+* Fixed issue with addImageWatermarkUint8List
+* Fixed issue with file size of watermark text
+* Updated dependencies
+
+## 1.0.8
 * Added "isNeedRotateToPortrait" for addTextWatermark() and addTextWatermarkUint8List() only for Android
 
 ## 1.0.7

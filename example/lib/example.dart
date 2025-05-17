@@ -184,7 +184,7 @@ class _ExampleWidgetState extends State<ExampleWidget> {
 
   Future<void> _takeImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
       final savedFile = File(image.path);
       setState(() {
@@ -272,7 +272,7 @@ class _ExampleWidgetState extends State<ExampleWidget> {
       x: 50,
       y: 100,
       textSize: 24,
-      color: Colors.black.withOpacity(0.5),
+      color: Colors.black.withValues(alpha: 0.5),
       backgroundTextColor: Colors.orange,
       backgroundTextPaddingBottom: 50,
       backgroundTextPaddingLeft: 10,
@@ -289,7 +289,7 @@ class _ExampleWidgetState extends State<ExampleWidget> {
   Future<void> _addImageWatermarkUint8List() async {
     final image = await _watermarkPlugin.addImageWatermarkUint8List(
       filePath: photoUint8List!,
-      watermarkImagePath: watermarkUint8List!,
+      watermarkImagePath: watermark!.path,
       x: 100,
       y: 200,
       watermarkWidth: 500,

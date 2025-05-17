@@ -89,7 +89,7 @@ abstract class WatermarkBridge extends PlatformInterface {
   Future<Uint8List?> addImageWatermarkUint8List(
     String filePath,
     Uint8List? bytes,
-    Uint8List watermarkImagePath,
+    String watermarkImagePath,
     int x,
     int y,
     int watermarkWidth,
