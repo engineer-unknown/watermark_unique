@@ -1,4 +1,4 @@
-## 1.0.8
+## 1.0.9
 * Fixed issue with addImageWatermarkUint8List
 * Fixed issue with file size of watermark text
 * Updated dependencies
