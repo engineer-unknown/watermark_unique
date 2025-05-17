@@ -99,7 +99,8 @@ class WatermarkUnique {
   Future<Uint8List?> addImageWatermarkUint8List({
     required String filePath,
     Uint8List? bytes,
-    required String watermarkImagePath,
+    String? watermarkImagePath,
+    Uint8List? watermarkImageBytes,
     required int x,
     required int y,
     required int watermarkWidth,
@@ -109,6 +110,7 @@ class WatermarkUnique {
       filePath,
       bytes,
       watermarkImagePath,
+      watermarkImageBytes,
       x,
       y,
       watermarkWidth,

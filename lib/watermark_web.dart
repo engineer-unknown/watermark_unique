@@ -90,7 +90,8 @@ class WatermarkWeb extends WatermarkBridge {
   Future<Uint8List?> addImageWatermarkUint8List(
     String filePath,
     Uint8List? bytes,
-    Uint8List watermarkImagePath,
+    String? watermarkImagePath,
+    Uint8List? watermarkImageBytes,
     int x,
     int y,
     int watermarkWidth,
@@ -104,7 +105,7 @@ class WatermarkWeb extends WatermarkBridge {
 
     // Decode the watermark image
     final watermarkImage = await ui
-        .instantiateImageCodec(watermarkImagePath)
+        .instantiateImageCodec(watermarkImageBytes!)
         .then((codec) => codec.getNextFrame())
         .then((frame) => frame.image);
 
