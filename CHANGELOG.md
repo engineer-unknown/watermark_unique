@@ -1,3 +1,7 @@
+## 1.1.0
+* Updated Android gradle to 8.5
+* Updated Kotlin version to 2.1.21
+
 ## 1.0.9
 * Fixed issue with addImageWatermarkUint8List
 * Fixed issue with file size of watermark text

@@ -96,6 +96,8 @@ class WatermarkUnique {
     );
   }
 
+  /// Parameter watermarkImageBytes need to be fill ONLY for WEB version.
+  /// For Mobile (Android and IOS) no need to use watermarkImageBytes.
   Future<Uint8List?> addImageWatermarkUint8List({
     required String filePath,
     Uint8List? bytes,
